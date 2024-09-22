@@ -16,7 +16,7 @@ cleaned_string = lambda s: ''.join(filter(lambda x: x in set(string.printable), 
 options = Options()
 options.add_argument("--log-level=3")
 options.add_argument("--start-maximized")
-options.add_argument('--headless')
+# options.add_argument('--headless')
 
 chrome_prefs = {}
 options.experimental_options["prefs"] = chrome_prefs    
@@ -79,7 +79,7 @@ to_scrape = [
     # 'https://www.yelp.com/biz/harp-and-crown-philadelphia',
     # 'https://www.yelp.com/biz/lukes-lobster-rittenhouse-philadelphia',
     # 'https://www.yelp.com/biz/fat-salmon-philadelphia',
-    # 'https://www.yelp.com/biz/giorgio-on-pine-philadelphia-3',  # TWEAKER
+    # 'https://www.yelp.com/biz/giorgio-on-pine-philadelphia-3',  
     # 'https://www.yelp.com/biz/hipcityveg-philadelphia',
     # 'https://www.yelp.com/biz/bleu-sushi-philadelphia-5',
     # 'https://www.yelp.com/biz/el-camino-real-philadelphia',
@@ -89,13 +89,13 @@ to_scrape = [
     # 'https://www.yelp.com/biz/the-love-philadelphia-2',
     # 'https://www.yelp.com/biz/el-rey-philadelphia',
     # 'https://www.yelp.com/biz/osteria-philadelphia-2',
-    # 'https://www.yelp.com/biz/dan-dan-philadelphia-6',          # TWEAKER
+    # 'https://www.yelp.com/biz/dan-dan-philadelphia-6',
     # 'https://www.yelp.com/biz/frankford-hall-philadelphia',
     # 'https://www.yelp.com/biz/silk-city-diner-and-lounge-philadelphia',
     # 'https://www.yelp.com/biz/sabrinas-caf%C3%A9-university-city-philadelphia-2',
     # 'https://www.yelp.com/biz/yards-brewing-company-philadelphia-3',
-    # 'https://www.yelp.com/biz/national-mechanics-philadelphia', # TWEAKER
-    # 'https://www.yelp.com/biz/cantina-dos-segundos-philadelphia', # TWEAKER
+    # 'https://www.yelp.com/biz/national-mechanics-philadelphia', 
+    # 'https://www.yelp.com/biz/cantina-dos-segundos-philadelphia', 
     # 'https://www.yelp.com/biz/pod-philadelphia-4',
     # 'https://www.yelp.com/biz/cantina-los-caballitos-philadelphia',
     # 'https://www.yelp.com/biz/elixr-coffee-roasters-philadelphia-3',
@@ -130,7 +130,7 @@ to_scrape = [
 ]
 
 for business_link in to_scrape:
-    driver.get(business_link)
+    driver.get(business_link + '?sort_by=date_desc')
 
     try:
         business_name = driver.find_element(By.TAG_NAME, 'h1').text
@@ -146,6 +146,11 @@ for business_link in to_scrape:
         business_cost = driver.find_element(By.XPATH, '//h1/parent::div/parent::div/span/span[contains(text(), "$")]').text.strip()
     except:
         business_cost = None
+
+    try:
+        business_rating = float(cleaned_string(driver.find_element(By.XPATH, '//a[@href="#reviews"]/parent::span/preceding-sibling::span').text))
+    except:
+        business_rating = None
 
     try:
         business_tags = driver.find_element(By.XPATH, '//h1/parent::div/parent::div/span[last()]').text.strip().split(', ')
@@ -203,6 +208,7 @@ for business_link in to_scrape:
 
     business_info = {
         'business_name': business_name,
+        'business_rating': business_rating,
         'business_address': business_address,
         'business_cost': business_cost,
         'business_tags': business_tags,
@@ -211,6 +217,7 @@ for business_link in to_scrape:
         }
 
     print(f'Business: {business_name}')
+    print(f'Rating: {business_rating}')
     print(f'Address: {business_address}')
     print(f'Cost: {business_cost}')
     print(f'Tags: {business_tags}')
@@ -220,12 +227,12 @@ for business_link in to_scrape:
     print('\n----------------------------------------------------------------\n')
 
     try:
-        with open('business_data.json', 'r', encoding='utf-8') as f:
+        with open('business_data_dated.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
     except FileNotFoundError:
         data = []
 
     data.append(business_info)
 
-    with open('business_data.json', 'w', encoding='utf-8') as f:
+    with open('business_data_dated.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
