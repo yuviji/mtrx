@@ -5,28 +5,54 @@ import json
 
 cleaned_string = lambda s: ''.join(filter(lambda x: x in set(string.printable), s))
 
-def async_scrape(url: string) -> dict:
-    # url should be like "https://www.yelp.com/biz/reading-terminal-market-philadelphia"
-    html_content = requests.get(url.split('?')[0] + '?sort_by=date_desc').content
+def async_scrape(url: string, pages: int) -> dict:
+    # url is only the part after '/biz/' in yelp link
+    link = 'https://www.yelp.com/biz/' + url.split('?')[0]
+    print(f'INITIATING ASYNC SCRAPE: {link}')
+    html_content = requests.get(link + '?sort_by=date_desc').content
     soup = BeautifulSoup(html_content, "html.parser")
 
     business_info = {}
 
     header = soup.select_one('h1').find_parent('div').find_parent('div')
-    business_info['business_name'] = cleaned_string(header.find('h1').text)
-    business_info['business_cost'] = '$' * header.text.count('$')
-    business_info['business_rating'] = float(cleaned_string(header.find('div').next_sibling.find('div').next_sibling.find('span').text))
-    business_info['business_tags'] = cleaned_string(header.find('div').find_next_siblings('span')[2].text).split(', ')
-    business_info['business_description'] = cleaned_string(soup.find('section', {'aria-label': 'About the Business'}).find_all('p')[-1].text)
-    business_info['business_address'] = cleaned_string(soup.select_one('a:-soup-contains("Get Directions")').find_parent('p').find_next_sibling('p').text)
+    try:
+        business_info['business_name'] = cleaned_string(header.find('h1').text)
+    except:
+        business_info['business_name'] = None
+
+    try:
+        business_info['business_cost'] = '$' * header.text.count('$')
+    except:
+        business_info['business_cost'] = None
+
+    try:
+        business_info['business_rating'] = float(cleaned_string(header.find('div').next_sibling.find('div').next_sibling.find('span').text))
+    except:
+        business_info['business_rating'] = None
+
+    try:
+        business_info['business_tags'] = cleaned_string(header.find('div').find_next_siblings('span')[2].text).split(', ')
+    except:
+        business_info['business_tags'] = None
+
+    try:
+        business_info['business_description'] = cleaned_string(soup.find('section', {'aria-label': 'About the Business'}).find_all('p')[-1].text)
+    except:
+        business_info['business_description'] = None
+
+    try:
+        business_info['business_address'] = cleaned_string(soup.select_one('a:-soup-contains("Get Directions")').find_parent('p').find_next_sibling('p').text)
+    except:
+        business_info['business_address'] = None
+
     business_info['business_reviews'] = []
 
     num_pages = tuple(map(int, cleaned_string(soup.find('div', {'aria-label': 'Pagination navigation'}).find('div').next_sibling.text).split(' of ')))
-    num_pages = (num_pages[0], min(10, num_pages[1]))
+    num_pages = (num_pages[0], min(pages, num_pages[1]))
     print(num_pages)
 
     for i in range(num_pages[1]):
-        html_content = requests.get(url + f'?start={i * 10}&sort_by=date_desc').content
+        html_content = requests.get(link + f'?start={i * 10}&sort_by=date_desc').content
         soup = BeautifulSoup(html_content, "html.parser")
         
         navbar = soup.find('div', {'aria-label': 'Pagination navigation'})
