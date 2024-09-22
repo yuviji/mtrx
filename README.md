@@ -2,6 +2,13 @@
 ### Data analytics solutions for small businesses.
 Team: Wyatt Lake, Sritan Motati, Yuvraj Lakhotia, Evelyn Li
 
+## Components
+- Client Portal: https://github.com/wyattlake/penn-apps-frontend
+- LLM & API Suite: https://github.com/sritanmotati/pennapps-backend
+- CORS Server: https://github.com/sritanmotati/cors-server
+- Web Scraper: https://github.com/yuviji/mtrx-scraper
+- Video Demo: PENDING
+
 ## Inspiration
 As first-years who recently moved onto Penn’s city campus, we’ve explored many new restaurants, and grown to appreciate the variety of family-owned dining spots. We wanted to create an accessible application that helps small businesses track their analytics against other similar companies and develop a deeper understanding of their potential action points. Our product inspiration stemmed from existing softwares such as Revinate, which creates complex and actionable insights from tons of messy data for large corporations such as hotels. With mtrx, we’re bringing this utility to the companies that really need it.
 
@@ -9,7 +16,7 @@ As first-years who recently moved onto Penn’s city campus, we’ve explored ma
 mtrx provides AI-enhanced actionable metrics for small businesses that don’t have the infrastructure to compute these statistics. It scrapes data from Yelp and processes it using our LLM suite to understand the business's current situation and suggest improvements.
 
 ## How we built it
-mtrx is composed of a three-part solution.
+mtrx is composed of a three-part solution. The [portal](https://github.com/wyattlake/penn-apps-frontend), [API](https://github.com/sritanmotati/pennapps-backend), and [scraper](https://github.com/yuviji/mtrx-scraper).
 
 **1. Client Portal ([Svelte](https://svelte.dev/)):** The web interface that small businesses can easily access, sign up for, and view metrics from. The portal uses [ApexCharts](https://www.npmjs.com/package/svelte-apexcharts) for visualizing our data and metrics, [Firebase](https://firebase.google.com/) for authentication and account information, and [Flowbite](https://flowbite.com/) for broader UI components. We implemented a cross-origin resource sharing (CORS) proxy-server that allowed us to access our REST API on Ploomber, and designed the visuals with [Adobe XD](https://adobexdplatform.com/).
 
