@@ -1,0 +1,6 @@
+Flask==2.3.3
+transformers==4.33.1
+tensorflow==2.13.0
+gunicorn==21.2.0
+firebase-admin==6.5.0
+BeautifulSoup4==4.12.3

@@ -1,0 +1,30 @@
+* {
+	font-family: 'Inter';
+}
+
+h1 {
+	font-size: 55px;
+	margin: 0px;
+}
+
+h2 {
+	font-weight: 500;
+	font-size: 22px;
+}
+
+p {
+	margin: 0px;
+	font-size: 22px;
+	font-weight: 300;
+	line-height: 32px;
+}
+
+.greyBox {
+	background-color: #fafafa;
+	border: 1px solid #c4c4c4;
+	border-radius: 20px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 30px;
+	padding-bottom: 20px;
+}
