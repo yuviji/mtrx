@@ -2,12 +2,7 @@
 ### Data analytics solutions for small businesses.
 Team: Wyatt Lake, Sritan Motati, Yuvraj Lakhotia, Evelyn Li
 
-## Components
-- Client Portal: https://github.com/wyattlake/penn-apps-frontend
-- LLM & API Suite: https://github.com/sritanmotati/pennapps-backend
-- CORS Server: https://github.com/sritanmotati/cors-server
-- Web Scraper: https://github.com/yuviji/mtrx-scraper
-- Video Demo: https://www.youtube.com/watch?v=5DYp92nrwiw
+Video Demo: https://www.youtube.com/watch?v=5DYp92nrwiw
 
 ## Inspiration
 As first-years who recently moved onto Penn’s city campus, we’ve explored many new restaurants, and grown to appreciate the variety of family-owned dining spots. We wanted to create an accessible application that helps small businesses track their analytics against other similar companies and develop a deeper understanding of their potential action points. Our product inspiration stemmed from existing softwares such as Revinate, which creates complex and actionable insights from tons of messy data for large corporations such as hotels. With mtrx, we’re bringing this utility to the companies that really need it.
